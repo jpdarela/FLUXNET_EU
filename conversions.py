@@ -255,7 +255,7 @@ if __name__ == "__main__":
         t = np.arange(730)
         
         mcwd = mcwd_calc(b,a,t)
-        with plt.figure(1):
-            plt.plot(mcwd)
-            plt.savefig("testmcwd.png")
-        # plt.close(fig)
+        fig = plt.figure(1)
+        plt.plot(mcwd)
+        plt.savefig("testmcwd.png")
+        plt.close(fig)
