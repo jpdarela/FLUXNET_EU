@@ -9,50 +9,50 @@ import pandas as pd
 from conversions import convert_pr, convert_ps, convert_ta, convert_vpd, VPD2RH
 
 
-FLUXNET_REF = """Pastorello, G., Trotta, C., Canfora, E. et al. The FLUXNET2015 dataset and the ONEFlux processing pipeline for eddy covariance data. Sci Data 7, 225 (2020). https://doi.org/10.1038/s41597-020-0534-3"""
+FLUXNET_REF = """Pastorello, G., Trotta, C., Canfora, E. et al. The FLUXNET2015 dataset and the ONEFlux processing pipeline 
+for eddy covariance data. Sci Data 7, 225 (2020). https://doi.org/10.1038/s41597-020-0534-3"""
 
-# # Sites metadata
-# ERA downscaled
 SITES_COORDINATES = {'SITE': ['Latitude', 'Longitude', 'name', 'filepath'],
-                     'Dav': [np.array([46.8153], 'f4'), np.array([9.8559], 'f4'), 'FLX-Dav',
+                     'Dav': [np.array([46.8153], 'f4'), np.array([9.8559], 'f4'), 'CH-Dav',
                              './FLX_CH-Dav_FLUXNET2015_FULLSET_1997-2014_1-4/FLX_CH-Dav_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
                     
-                     'Tha': [np.array([50.9626], 'f4'), np.array([13.5651], 'f4'), 'FLX-Tha',
+                     'Tha': [np.array([50.9626], 'f4'), np.array([13.5651], 'f4'), 'DE-Tha',
                              './FLX_DE-Tha_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_DE-Tha_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
                     
-                     'Hai': [np.array([51.0792], 'f4'), np.array([10.4522], 'f4'), 'FLX-Hai',
+                     'Hai': [np.array([51.0792], 'f4'), np.array([10.4522], 'f4'), 'DE-Hai',
                              './FLX_DE-Hai_FLUXNET2015_FULLSET_2000-2012_1-4/FLX_DE-Hai_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
                     
-                     'Lnf': [np.array([51.3282], 'f4'), np.array([10.3678], 'f4'), 'FLX-Lnf',
+                     'Lnf': [np.array([51.3282], 'f4'), np.array([10.3678], 'f4'), 'DE-Lnf',
                              './FLX_DE-Lnf_FLUXNET2015_FULLSET_2002-2012_1-4/FLX_DE-Lnf_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
                     
-                     'Obe': [np.array([50.7867], 'f4'), np.array([13.7213], 'f4'), 'FLX-Obe',
+                     'Obe': [np.array([50.7867], 'f4'), np.array([13.7213], 'f4'), 'DE-Obe',
                              './FLX_DE-Obe_FLUXNET2015_FULLSET_2008-2014_1-4/FLX_DE-Obe_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
                     
-                     'Lae': [np.array([47.4783], 'f4'), np.array([8.3644], 'f4'), 'FLX-Lae',
+                     'Lae': [np.array([47.4783], 'f4'), np.array([8.3644], 'f4'), 'CH-Lae',
                              './FLX_CH-Lae_FLUXNET2015_FULLSET_2004-2014_1-4/FLX_CH-Lae_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
                      
-                     'BK1': [np.array([49.5021], 'f4'), np.array([18.5369], 'f4'), 'FLX-BK1',
+                     'BK1': [np.array([49.5021], 'f4'), np.array([18.5369], 'f4'), 'CZ-BK1',
                              './FLX_CZ-BK1_FLUXNET2015_FULLSET_2004-2014_2-4/FLX_CZ-BK1_FLUXNET2015_ERAI_DD_1989-2014_2-4.csv'],
                      
-                     'Lkb': [np.array([49.0996], 'f4'), np.array([13.3047], 'f4'), 'FLX-Lkb',
+                     'Lkb': [np.array([49.0996], 'f4'), np.array([13.3047], 'f4'), 'DE-Lkb',
                              './FLX_DE-Lkb_FLUXNET2015_FULLSET_2009-2013_1-4/FLX_DE-Lkb_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
                      
-                     'Sor': [np.array([55.4859], 'f4'), np.array([11.6446], 'f4'), 'FLX-Sor',
+                     'Sor': [np.array([55.4859], 'f4'), np.array([11.6446], 'f4'), 'DK-Sor',
                              './FLX_DK-Sor_FLUXNET2015_FULLSET_1996-2014_2-4/FLX_DK-Sor_FLUXNET2015_ERAI_DD_1989-2014_2-4.csv'],
                      
-                     'Col': [np.array([41.8494], 'f4'), np.array([13.5881], 'f4'), 'FLX-Col',
+                     'Col': [np.array([41.8494], 'f4'), np.array([13.5881], 'f4'), 'IT-Col',
                              './FLX_IT-Col_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_IT-Col_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
                     
-                     'Ren': [np.array([46.5869], 'f4'), np.array([11.4337], 'f4'), 'FLX-Ren',
+                     'Ren': [np.array([46.5869], 'f4'), np.array([11.4337], 'f4'), 'IT-Ren',
                              './FLX_IT-Ren_FLUXNET2015_FULLSET_1998-2013_1-4/FLX_IT-Ren_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
                      
-                     'Fyo': [np.array([56.4615], 'f4'), np.array([32.9221], 'f4'), 'FLX-Fyo',
+                     'Fyo': [np.array([56.4615], 'f4'), np.array([32.9221], 'f4'), 'RU-Fyo',
                              './FLX_RU-Fyo_FLUXNET2015_FULLSET_1998-2014_2-4/FLX_RU-Fyo_FLUXNET2015_ERAI_DD_1989-2014_2-4.csv']}
 
 # # Variables METAdata (Fprcing)
 FLUXNET_FULLSET_VARS = {'tas':  ["TA_ERA", "Air temperature, gapfilled using MDS method", "K", 'air_temperature'], # FLUXNET celsius
-                        'rsds': ["SW_IN_ERA", "Shortwave radiation, incoming, gapfilled using MDS", 'W m-2', "surface_downwelling_shortwave_flux_in_air"],
+                        'rsds': ["SW_IN_ERA", "Shortwave radiation, incoming, gapfilled using MDS", 'W m-2',
+                                 "surface_downwelling_shortwave_flux_in_air"],
                         'vpd':  ['VPD_ERA', "Vapor Pressure Deficit gapfilled using MDS method", "kPa", "vpd"], # FLUXNET hPa
                         'ps': ["PA_ERA","Atmospheric Pressure","Pa", "surface_air_pressure"], # FLUXNET kPa
                         'pr': ["P_ERA","Precipitation","kg m-2 s-1", "precipitation_flux"], # FLUXNET mm/day
@@ -210,7 +210,7 @@ def timeseries(fname = None,
         S = dset.createVariable("station", 'i4', ("station",), fill_value=999999)
         X  = dset.createVariable("lon", 'f4', ("station",), fill_value=1e+20)
         Y =  dset.createVariable("lat", 'f4', ("station",), fill_value=1e+20)
-        SN = dset.createVariable("station_name", '<U7', ("station", ),fill_value= 'aaaaaaa')
+        SN = dset.createVariable("station_name", '<U6', ("station", ),fill_value= '------')
         T  = dset.createVariable("time", 'i4', ("time",), fill_value=999999)
 
         D  = dset.createVariable(var, 'f4', ("station", "time"), fill_value=1e+20)
@@ -235,7 +235,7 @@ def timeseries(fname = None,
         Y.axis = 'Y'
 
         if names is None:
-            nm = np.array(['aaaaaaa','aaaaaaa','aaaaaaa'], dtype='<U7')
+            assert False, "need station/site names"
         else:
             nm = names
         SN[...] = nm
@@ -295,7 +295,7 @@ def cf_timeseries(fname = None,
     # Create netCDF variables
     X  = dset.createVariable("lon", 'f4')
     Y =  dset.createVariable("lat", 'f4')
-    SN = dset.createVariable("station_name", '<U7')
+    SN = dset.createVariable("station_name", '<U6')
     T  = dset.createVariable("time", 'i4', ("time",))
 
     D  = dset.createVariable(var, 'f8', ("time",))
@@ -381,38 +381,7 @@ def write_site_nc(VAR, mod=None):
         timeseries(fname=fname00, arr=arr, var=VAR, unit=units, names=names,
                        descr=descr, time=time_dict, la=la, lo=lo,
                        reference=FLUXNET_REF)
-
-        # Change calendar and etc.
-        # os.system(f"cdo settaxis,{day_init},{hour_init},days TEST_FLUXNET_NETCDF.nc4 out.nc4")
-        # os.system("cdo delete,month=5,7,8,10,12,day=31 out0.nc4 out1.nc4")
-
-        # os.system("cdo delete,month=2,day=29 out0.nc4 out5.nc4")
-        # os.system(f"cdo setcalendar,365_day out5.nc4  out6.nc4")
-        # os.system(f"cdo settaxis,{day_init},{hour_init},day out6.nc4 out7.nc4")
-        # os.system(f"cdo settbounds,day out7.nc4 {VAR}_{SITES_COORDINATES[SITE][2]}.nc4")
-        # os.system("rm -rf out*")
-
-        # Write co2 as annual text files
-        # if VAR == 'co2':
-        #     print(f"Processing CO2 {SITE}")
-        #     os.system(f"cdo yearmean {VAR}_{SITES_COORDINATES[SITE][2]}.nc4 {VAR}_{SITES_COORDINATES[SITE][2]}_yearAvg.nc4")
-        #     with Dataset(f"{VAR}_{SITES_COORDINATES[SITE][2]}_yearAvg.nc4", 'r') as fh:
-        #         tindex = fh.variables['time'][:]
-        #         calendar_aux = fh.variables['time'].calendar
-        #         tunits_aux = fh.variables['time'].units
-        #         co2Data = fh.variables['co2'][:]
-        #         year0 = cftime.num2date(tindex[0], tunits_aux, calendar_aux)
-        #         yearF = cftime.num2date(tindex[-1], tunits_aux, calendar_aux)
-
-        #     lines = []
-        #     for i, x in enumerate(range(year0.year, yearF.year + 1)):
-        #         line_to_append = f"{x} {round(co2Data[i][0][0], 2)}\n"
-        #         lines.append(line_to_append)
-        #         print(f"Created CO2 for the year {x} = {round(co2Data[i][0][0], 2)}")
-
-
-        #     with open(f"co2_FLX_{SITE}.txt", 'w') as fh:
-        #         fh.writelines(lines)
+        
     else:
         print(f"VAR NOT FOUND: {FLUXNET_FULLSET_VARS[VAR][0]}")
 
