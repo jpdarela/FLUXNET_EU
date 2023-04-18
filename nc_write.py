@@ -9,43 +9,43 @@ import pandas as pd
 from conversions import convert_pr, convert_ps, convert_ta, convert_vpd, VPD2RH
 
 
-FLUXNET_REF = """Pastorello, G., Trotta, C., Canfora, E. et al. The FLUXNET2015 dataset and the ONEFlux processing pipeline 
+FLUXNET_REF = """Pastorello, G., Trotta, C., Canfora, E. et al. The FLUXNET2015 dataset and the ONEFlux processing pipeline
 for eddy covariance data. Sci Data 7, 225 (2020). https://doi.org/10.1038/s41597-020-0534-3"""
 
 SITES_COORDINATES = {'SITE': ['Latitude', 'Longitude', 'name', 'filepath'],
                      'Dav': [np.array([46.8153], 'f4'), np.array([9.8559], 'f4'), 'CH-Dav',
                              './FLX_CH-Dav_FLUXNET2015_FULLSET_1997-2014_1-4/FLX_CH-Dav_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
-                    
+
                      'Tha': [np.array([50.9626], 'f4'), np.array([13.5651], 'f4'), 'DE-Tha',
                              './FLX_DE-Tha_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_DE-Tha_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
-                    
+
                      'Hai': [np.array([51.0792], 'f4'), np.array([10.4522], 'f4'), 'DE-Hai',
                              './FLX_DE-Hai_FLUXNET2015_FULLSET_2000-2012_1-4/FLX_DE-Hai_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
-                    
+
                      'Lnf': [np.array([51.3282], 'f4'), np.array([10.3678], 'f4'), 'DE-Lnf',
                              './FLX_DE-Lnf_FLUXNET2015_FULLSET_2002-2012_1-4/FLX_DE-Lnf_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
-                    
+
                      'Obe': [np.array([50.7867], 'f4'), np.array([13.7213], 'f4'), 'DE-Obe',
                              './FLX_DE-Obe_FLUXNET2015_FULLSET_2008-2014_1-4/FLX_DE-Obe_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
-                    
+
                      'Lae': [np.array([47.4783], 'f4'), np.array([8.3644], 'f4'), 'CH-Lae',
                              './FLX_CH-Lae_FLUXNET2015_FULLSET_2004-2014_1-4/FLX_CH-Lae_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
-                     
+
                      'BK1': [np.array([49.5021], 'f4'), np.array([18.5369], 'f4'), 'CZ-BK1',
                              './FLX_CZ-BK1_FLUXNET2015_FULLSET_2004-2014_2-4/FLX_CZ-BK1_FLUXNET2015_ERAI_DD_1989-2014_2-4.csv'],
-                     
+
                      'Lkb': [np.array([49.0996], 'f4'), np.array([13.3047], 'f4'), 'DE-Lkb',
                              './FLX_DE-Lkb_FLUXNET2015_FULLSET_2009-2013_1-4/FLX_DE-Lkb_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
-                     
+
                      'Sor': [np.array([55.4859], 'f4'), np.array([11.6446], 'f4'), 'DK-Sor',
                              './FLX_DK-Sor_FLUXNET2015_FULLSET_1996-2014_2-4/FLX_DK-Sor_FLUXNET2015_ERAI_DD_1989-2014_2-4.csv'],
-                     
+
                      'Col': [np.array([41.8494], 'f4'), np.array([13.5881], 'f4'), 'IT-Col',
                              './FLX_IT-Col_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_IT-Col_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
-                    
+
                      'Ren': [np.array([46.5869], 'f4'), np.array([11.4337], 'f4'), 'IT-Ren',
                              './FLX_IT-Ren_FLUXNET2015_FULLSET_1998-2013_1-4/FLX_IT-Ren_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
-                     
+
                      'Fyo': [np.array([56.4615], 'f4'), np.array([32.9221], 'f4'), 'RU-Fyo',
                              './FLX_RU-Fyo_FLUXNET2015_FULLSET_1998-2014_2-4/FLX_RU-Fyo_FLUXNET2015_ERAI_DD_1989-2014_2-4.csv']}
 
@@ -77,12 +77,26 @@ OBS_SITES = {'SITE': 'filepath',
              'Fyo': './FLX_RU-Fyo_FLUXNET2015_FULLSET_1998-2014_2-4/FLX_RU-Fyo_FLUXNET2015_FULLSET_MM_1998-2014_2-4.csv'}
 
 
-OBS_VARS = {"nee"  : ("NEE_VUT_REF", "kg m-2 month-1", "Net Ecosystem Exchange"), #fluxnet 
+OBS_VARS = {"nee"  : ("NEE_VUT_REF", "kg m-2 month-1", "Net Ecosystem Exchange"), #fluxnet
             "gpp"  : ("GPP_NT_VUT_REF", "kg m-2 month-1", "Gross Primary Productivity"),
             "reco" : ("RECO_NT_VUT_REF", "kg m-2 month-1", "Ecosystem Respiration"),
             "mle"  : ("LE_F_MDS", "W m-2", "Latent Heat Flux"), # COnvert to AET
             "tas"  : ("TA_F_MDS", "celcius", "air temperature"),
-            "aet"  : ("AET", "kg m-2 month-1", "Actual Evapotranspiration")}
+            "aet"  : ("AET", "kg m-2 month-1", "Actual Evapotranspiration")} # Not in the dataset ()}
+
+
+SITE_ALTITUDE = [("CH-Dav", 1639),
+                 ("CH-Lae", 689),
+                 ("DE-Hai", 430),
+                 ("", 0),
+                 ("", 0),
+                 ("", 0),
+                 ("", 0),
+                 ("", 0),
+                 ("", 0),
+                 ("", 0),
+                 ("", 0),
+                 ("", 0)]#masl
 
 
 def get_conv_func(var):
@@ -111,7 +125,7 @@ def get_ref_data(site, var=None):
     if var == 'tas':
         return pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__()
     else:
-        # need to convert C fluxes to make comparable        
+        # need to convert C fluxes to make comparable
         return pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__() * 0.0304368 # gm -2 d-1 => kg m-2 month-1
 
 def calc_LHV(temp):
@@ -146,8 +160,8 @@ def create_arrs(var, mod_var=None):
 
     for x in range(counter):
         out_data[x, :] = get_data(fdata[x], var)
-    
-           
+
+
     if mod_var is not None:
             out_data = mod_var(out_data)
 
@@ -330,7 +344,7 @@ def cf_timeseries(fname = None,
     dset.close()
 
 def write_site_nc(VAR, mod=None):
-    
+
     """write FLUXNET2015 FULLSET Variable to a netCDF4 file """
     start = "19890101"
     end= "20141231"
@@ -358,12 +372,12 @@ def write_site_nc(VAR, mod=None):
     except:
         if VAR == 'hurs':
             try:
-                vpd, lat, lon, names = create_arrs('vpd')[0][0]
+                vpd, lat, lon, names = create_arrs('vpd')
                 # TODO error
-                tair = create_arrs('tas')[0][0]
+                tair = create_arrs('tas')[0] - 273.15
                 arr = 100.0 * VPD2RH(tair, (vpd * (-1)) * 0.1)
                 success = True
-                assert False, "dont do hurs - error"
+                # assert False, "dont do hurs - error"
             except:
                 success = False
         pass
@@ -377,23 +391,23 @@ def write_site_nc(VAR, mod=None):
         if mod is not None:
             ID, arr = mod(arr, VAR)
             fname00 = f"{VAR}_{ID}_FLUXNET2015"
-        
+
         timeseries(fname=fname00, arr=arr, var=VAR, unit=units, names=names,
                        descr=descr, time=time_dict, la=la, lo=lo,
                        reference=FLUXNET_REF)
-        
+
     else:
         print(f"VAR NOT FOUND: {FLUXNET_FULLSET_VARS[VAR][0]}")
 
 def write_ref_data(VAR, site):
-    
+
     """write FLUXNET2015 FULLSET REFERENCE Variable to a netCDF4 file """
-    
+
     assert VAR in ['nee', 'gpp', 'reco', "aet"]
-    
+
     start, end = get_timestaps(site)
     idx = pd.date_range(start, end, freq='MS')
-    
+
     # time_data = np.arange(idx.size, dtype='i4')
 
     day_init, hour_init = idx[0].isoformat().split("T")
@@ -401,9 +415,9 @@ def write_ref_data(VAR, site):
     time_units = "days since %s %s" % (str(day_init), str(hour_init))
 
     calendar = 'proleptic_gregorian'
-    
+
     time_data = cftime.date2num(idx.to_pydatetime(), units=time_units, calendar=calendar)
-    
+
     descr = OBS_VARS[VAR][2]
     units = OBS_VARS[VAR][1]
 
@@ -415,10 +429,10 @@ def write_ref_data(VAR, site):
         arr = get_aet(site)
     else:
         arr = get_ref_data(site, VAR)
-    
+
     la = SITES_COORDINATES[site][0][0]
     lo = SITES_COORDINATES[site][1][0]
-    
+
     fname00 = f"{VAR}_{site}_FLUXNET2015"
 
     cf_timeseries(fname=fname00, arr=arr, var=VAR, site=site,unit=units,
@@ -426,10 +440,10 @@ def write_ref_data(VAR, site):
                     reference=FLUXNET_REF)
 
 if __name__ == "__main__":
-    for i, site in enumerate(SITES_COORDINATES.keys()):
-        if i == 0:
-            pass
-        else:
-            for v in ['nee', 'gpp', 'reco', "aet"]:
-                write_ref_data(v, site)
-                
+    pass
+    # for i, site in enumerate(SITES_COORDINATES.keys()):
+    #     if i == 0:
+    #         pass
+    #     else:
+    #         for v in ['nee', 'gpp', 'reco', "aet"]:
+    #             write_ref_data(v, site)

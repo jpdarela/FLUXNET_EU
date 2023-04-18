@@ -8,6 +8,9 @@ import cftime as cf
 from copy import deepcopy
 from numba import vectorize, float64, float32
 
+SITES = ['CH-Dav', 'DE-Tha', 'DE-Hai', 'DE-Lnf', 'DE-Obe', 'CH-Lae',
+         'CZ-BK1', 'DE-Lkb', 'DK-Sor', 'IT-Col', 'IT-Ren', 'RU-Fyo']
+
 # GLOBAL
 Pa2kPa = 1e-3
 idx = pd.date_range("19890101", "20141231", freq="D")
@@ -41,10 +44,10 @@ convert_ta = np.vectorize(lambda P: P + 273.15)
 
 # modifiers
 def mod_mJJAs(pr:np.array=None, var:str="pr")->np.array:
-    
+
     tmp = deepcopy(pr)
-    
-    if var == "pr":        
+
+    if var == "pr":
         for index, day in enumerate(idx):
             if index >= exp_st:
                 if day.month in [6, 7, 8]:
@@ -53,27 +56,27 @@ def mod_mJJAs(pr:np.array=None, var:str="pr")->np.array:
                 elif day.month in [5, 9]:
                     x = 0.7
                     tmp[:, index] -= tmp[:, index] * x
-                
+
         return "dry-summer2001-", tmp
-    
-    elif var == "vpd":       
+
+    elif var == "vpd":
         for index, day in enumerate(idx):
             if index >= exp_st:
                 if day.month in [6, 7, 8]:
-                    dec = np.abs(tmp[:, index]) * 0.5  
+                    dec = np.abs(tmp[:, index]) * 0.5
                     tmp[:, index] -= dec
                 elif day.month in [5, 9]:
-                    dec = np.abs(tmp[:, index]) * 0.5  
+                    dec = np.abs(tmp[:, index]) * 0.5
                     tmp[:, index] -= dec
-                
+
         return "dry-summer2001-", tmp
-    
+
     else:
         assert False, f"operation not allowed for var {var}"
 
 
 def mod_make_drought(pr:np.array=None, var:str="pr")->np.array:
-    tmp = deepcopy(pr) #np.zeros(shape=idx.size, dtype='f4') + 20    
+    tmp = deepcopy(pr) #np.zeros(shape=idx.size, dtype='f4') + 20
     # reduce pr x %
     if var == "pr":
         for index, day in enumerate(idx):
@@ -107,11 +110,11 @@ def mod_make_drought(pr:np.array=None, var:str="pr")->np.array:
                 elif day.month in [5, 9]:
                     dec = np.abs(tmp[:, index]) * 0.5
                     tmp[:, index] -= dec
-        return "2003-5_drought", tmp   
+        return "2003-5_drought", tmp
 
 
 def mod_tas(ts:np.array=None)->np.array:
-    tmp = deepcopy(ts) #np.zeros(shape=idx.size, dtype='f4') + 20    
+    tmp = deepcopy(ts) #np.zeros(shape=idx.size, dtype='f4') + 20
     # inbrease ts x dcgC
     x = 4
     for index, day in enumerate(idx):
@@ -120,7 +123,7 @@ def mod_tas(ts:np.array=None)->np.array:
                 tmp[:,index] += x
             elif day.month in [5, 9]:
                 x = 2
-                tmp[:,index] += x            
+                tmp[:,index] += x
     return "SSP3-7.0_NearTerm-", tmp
 
 # utilities
@@ -188,9 +191,11 @@ def mcwd_calc(et, pr, TIME_AXIS):
     MCWD_DAY = np.zeros(shape=T,)
 
     time = 0
+    time_index = []
     while time < T:
         check = cf.num2date(
             TIME_AXIS[time], units=units, calendar=calendar)
+        time_index.append(check)
         if time == 0:
             mcwd = MCWD_DAY[time]
         else:
@@ -211,52 +216,52 @@ def mcwd_calc(et, pr, TIME_AXIS):
         print(f"\rTSTEP{time}", end='', flush=True)
         time += 1
     print("\n")
-    return MCWD_DAY
+    return MCWD_DAY, [x.isoformat() for x in time_index]
 
 
-def mcwd_fluxnet2015(site):
-    def get_series(var, site):
-        station_name = f"FLX-{site}"
-        data = Dataset(f"./{var}_dry-summer2001-_FLUXNET2015.nc")
-        idx = np.where(data["station_name"][...] == station_name)[0][-1]
-        tmp = data[var][idx, :] 
-        return tmp, data
-    #Get aet 
-    ds = Dataset(f"aet_{site}_FLUXNET2015.nc")
+def mcwd_fluxnet2015(site, plot=False):
+    # def get_series(var, site):
+    station_name = f"{site}"
+    ncvar = Dataset(f"./pr_FLUXNET2015.nc")
+    idx = np.where(ncvar["station_name"][...] == station_name)[0][-1]
+    pr = ncvar["pr"][idx, :]
+
+    #Get aet
+    place = site.split("-")[-1]
+    ds = Dataset(f"aet_{place}_FLUXNET2015.nc")
     aet = ds["aet"][...].mean()
-    
-    pr, ncvar = get_series("pr", site)
-    
-    # TODO
-    mcwd = mcwd_calc(np.repeat(aet, pr.size), pr, ncvar["time"][...])
+
+    mcwd, tidx = mcwd_calc(np.repeat(aet, pr.size), pr, ncvar["time"][...])
+
+    srs = pd.Series(mcwd, index=pd.Index(pd.to_datetime(tidx)))
+    if plot:
+        fig, ax = plt.subplots(1,1)
+        srs.groupby(srs.index.year).mean().plot(ax=ax)
+        plt.savefig(fname=f"mcwd_{site}.png", dpi=300)
+        plt.clf()
+        plt.close(fig)
+
     ds.close()
     ncvar.close()
-       
-    srs = pd.Series(mcwd, index=idx)
-    fig, ax = plt.subplots(1,1)
-    srs.rolling(365).mean().plot(ax=ax)
-    plt.savefig(fname=f"mcwd_{site}.png", dpi=300)
-    plt.clf()
-    plt.close(fig)
-
+    return srs
 
 if __name__ == "__main__":
-    
+
     def test0():
         a = np.linspace(2,3,20000)
         convert_vpd_vec(a)
     def test1():
         a = np.linspace(2,3,20000)
         convert_vpd(a)
-        
-        
-        
+
+
+
     def testmcwd():
         import matplotlib.pyplot as plt
         a = np.random.randint(0,10,730)
         b = np.random.randint(0,15,730)
         t = np.arange(730)
-        
+
         mcwd = mcwd_calc(b,a,t)
         fig = plt.figure(1)
         plt.plot(mcwd)

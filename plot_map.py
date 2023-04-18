@@ -19,6 +19,7 @@ def get_points():
         out[s, 0] = v[1]
         out[s, 1] = v[0]
         s += 1
+    print(site_names)
     return out.T
 
 
