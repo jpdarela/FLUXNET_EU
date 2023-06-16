@@ -17,7 +17,7 @@ SITES =  ['Dav', 'Tha', 'Hai', 'Lnf',
 
 def main():
     for variable in VAR:
-        
+
         write_site_nc(variable)
 
     create_gridlist("FLUXNET2015_gridlist")
@@ -27,11 +27,11 @@ def main():
             write_ref_data(variable, site)
 
     # create modified PREC
-    # write_site_nc('pr', mod=mod_mJJAs)
-    # write_site_nc('pr', mod=mod_make_drought)
+    write_site_nc('pr', mod=mod_mJJAs)
+    write_site_nc('pr', mod=mod_make_drought)
 
-    # write_site_nc('vpd', mod=mod_mJJAs)
-    # write_site_nc('vpd', mod=mod_make_drought)
+    write_site_nc('vpd', mod=mod_mJJAs)
+    write_site_nc('vpd', mod=mod_make_drought)
 
 if __name__ == "__main__":
     main()
