@@ -1,5 +1,5 @@
 ,Variable,Units,Description
-0,TIMEKEEPING,,F_MDS
+0,TIMEKEEPING,,
 1,TIMESTAMP,YYYYMMDDHHMM,ISO timestamp – short format
 2,TIMESTAMP_START,YYYYMMDDHHMM,ISO timestamp start of averaging period – short format
 3,TIMESTAMP_END,YYYYMMDDHHMM,ISO timestamp end of averaging period – short format

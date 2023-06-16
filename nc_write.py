@@ -47,7 +47,39 @@ SITES_COORDINATES = {'SITE': ['Latitude', 'Longitude', 'name', 'filepath'],
                              './FLX_IT-Ren_FLUXNET2015_FULLSET_1998-2013_1-4/FLX_IT-Ren_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
 
                      'Fyo': [np.array([56.4615], 'f4'), np.array([32.9221], 'f4'), 'RU-Fyo',
-                             './FLX_RU-Fyo_FLUXNET2015_FULLSET_1998-2014_2-4/FLX_RU-Fyo_FLUXNET2015_ERAI_DD_1989-2014_2-4.csv']}
+                             './FLX_RU-Fyo_FLUXNET2015_FULLSET_1998-2014_2-4/FLX_RU-Fyo_FLUXNET2015_ERAI_DD_1989-2014_2-4.csv'],
+
+                     'Bra': [np.array([51.3091], 'f4'), np.array([4.5205], 'f4'), 'BE-Bra',
+                             './FLX_BE-Bra_FLUXNET2015_FULLSET_1996-2014_2-4/FLX_BE-Bra_FLUXNET2015_ERAI_DD_1989-2014_2-4.csv'],
+
+                     'Vie': [np.array([50.3050], 'f4'), np.array([5.9980], 'f4'), 'BE-Vie',
+                             './FLX_BE-Vie_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_BE-Vie_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
+
+                     'Hyy': [np.array([61.8475], 'f4'), np.array([24.295], 'f4'), 'FI-Hyy',
+                             './FLX_FI-Hyy_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_FI-Hyy_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
+
+                     'Let': [np.array([60.6418], 'f4'), np.array([23.9597], 'f4'), 'FI-Let',
+                             './FLX_FI-Let_FLUXNET2015_FULLSET_2009-2012_1-4/FLX_FI-Let_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
+
+                     'Sod': [np.array([67.3618], 'f4'), np.array([26.6378], 'f4'), 'FI-Sod',
+                             './FLX_FI-Sod_FLUXNET2015_FULLSET_2001-2014_1-4/FLX_FI-Sod_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
+
+                     'Fon': [np.array([48.4764], 'f4'), np.array([2.7801], 'f4'), 'FR-Fon',
+                             './FLX_FR-Fon_FLUXNET2015_FULLSET_2005-2014_1-4/FLX_FR-Fon_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
+
+                     'Pue': [np.array([43.7413], 'f4'), np.array([3.5958], 'f4'), 'FR-Pue',
+                             './FLX_FR-Pue_FLUXNET2015_FULLSET_2000-2014_2-4/FLX_FR-Pue_FLUXNET2015_ERAI_DD_1989-2014_2-4.csv'],
+
+                     'Cpz': [np.array([41.7052], 'f4'), np.array([12.3761], 'f4'), 'IT-Cpz',
+                             './FLX_IT-Cpz_FLUXNET2015_FULLSET_1997-2009_1-4/FLX_IT-Cpz_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
+
+                     'Lav': [np.array([45.9562], 'f4'), np.array([11.2813], 'f4'), 'IT-Lav',
+                             './FLX_IT-Lav_FLUXNET2015_FULLSET_2003-2014_2-4/FLX_IT-Lav_FLUXNET2015_ERAI_DD_1989-2014_2-4.csv'],
+
+                     'Loo': [np.array([52.1665], 'f4'), np.array([5.7435], 'f4'), 'NL-Loo',
+                             './FLX_NL-Loo_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_NL-Loo_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
+
+                     }
 
 # # Variables METAdata (Fprcing)
 FLUXNET_FULLSET_VARS = {'tas':  ["TA_ERA", "Air temperature, gapfilled using MDS method", "K", 'air_temperature'], # FLUXNET celsius
@@ -74,29 +106,25 @@ OBS_SITES = {'SITE': 'filepath',
              'Sor': './FLX_DK-Sor_FLUXNET2015_FULLSET_1996-2014_2-4/FLX_DK-Sor_FLUXNET2015_FULLSET_MM_1996-2014_2-4.csv',
              'Col': './FLX_IT-Col_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_IT-Col_FLUXNET2015_FULLSET_MM_1996-2014_1-4.csv',
              'Ren': './FLX_IT-Ren_FLUXNET2015_FULLSET_1998-2013_1-4/FLX_IT-Ren_FLUXNET2015_FULLSET_MM_1998-2013_1-4.csv',
-             'Fyo': './FLX_RU-Fyo_FLUXNET2015_FULLSET_1998-2014_2-4/FLX_RU-Fyo_FLUXNET2015_FULLSET_MM_1998-2014_2-4.csv'}
+             'Fyo': './FLX_RU-Fyo_FLUXNET2015_FULLSET_1998-2014_2-4/FLX_RU-Fyo_FLUXNET2015_FULLSET_MM_1998-2014_2-4.csv',
+             'Bra': './FLX_BE-Bra_FLUXNET2015_FULLSET_1996-2014_2-4/FLX_BE-Bra_FLUXNET2015_FULLSET_MM_1996-2014_2-4.csv',
+             'Vie': './FLX_BE-Vie_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_BE-Vie_FLUXNET2015_FULLSET_MM_1996-2014_1-4.csv',
+             'Hyy': './FLX_FI-Hyy_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_FI-Hyy_FLUXNET2015_FULLSET_MM_1996-2014_1-4.csv',
+             'Let': './FLX_FI-Let_FLUXNET2015_FULLSET_2009-2012_1-4/FLX_FI-Let_FLUXNET2015_FULLSET_MM_2009-2012_1-4.csv',
+             'Sod': './FLX_FI-Sod_FLUXNET2015_FULLSET_2001-2014_1-4/FLX_FI-Sod_FLUXNET2015_FULLSET_MM_2001-2014_1-4.csv',
+             'Fon': './FLX_FR-Fon_FLUXNET2015_FULLSET_2005-2014_1-4/FLX_FR-Fon_FLUXNET2015_FULLSET_MM_2005-2014_1-4.csv',
+             'Pue': './FLX_FR-Pue_FLUXNET2015_FULLSET_2000-2014_2-4/FLX_FR-Pue_FLUXNET2015_FULLSET_MM_2000-2014_2-4.csv',
+             'Cpz': './FLX_IT-Cpz_FLUXNET2015_FULLSET_1997-2009_1-4/FLX_IT-Cpz_FLUXNET2015_FULLSET_MM_1997-2009_1-4.csv',
+             'Lav': './FLX_IT-Lav_FLUXNET2015_FULLSET_2003-2014_2-4/FLX_IT-Lav_FLUXNET2015_FULLSET_MM_2003-2014_2-4.csv',
+             'Loo': './FLX_NL-Loo_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_NL-Loo_FLUXNET2015_FULLSET_MM_1996-2014_1-4.csv'}
 
 
-OBS_VARS = {"nee"  : ("NEE_VUT_REF", "kg m-2 month-1", "Net Ecosystem Exchange"), #fluxnet
-            "gpp"  : ("GPP_NT_VUT_REF", "kg m-2 month-1", "Gross Primary Productivity"),
-            "reco" : ("RECO_NT_VUT_REF", "kg m-2 month-1", "Ecosystem Respiration"),
-            "mle"  : ("LE_F_MDS", "W m-2", "Latent Heat Flux"), # COnvert to AET
-            "tas"  : ("TA_F_MDS", "celcius", "air temperature"),
+OBS_VARS = {"nee"  : ("NEE_VUT_REF", "kg m-2 month-1", "Net Ecosystem Exchange", "NEE_VUT_REF_QC"), #fluxnet
+            "gpp"  : ("GPP_NT_VUT_REF", "kg m-2 month-1", "Gross Primary Productivity", ""),
+            "reco" : ("RECO_NT_VUT_REF", "kg m-2 month-1", "Ecosystem Respiration", ""),
+            "mle"  : ("LE_F_MDS", "W m-2", "Latent Heat Flux", "LE_F_MDS_QC"), # COnvert to AET
+            "tas"  : ("TA_F_MDS", "celcius", "air temperature", "TA_F_MDS_QC"),
             "aet"  : ("AET", "kg m-2 month-1", "Actual Evapotranspiration")} # Not in the dataset ()}
-
-
-SITE_ALTITUDE = [("CH-Dav", 1639),
-                 ("CH-Lae", 689),
-                 ("DE-Hai", 430),
-                 ("", 0),
-                 ("", 0),
-                 ("", 0),
-                 ("", 0),
-                 ("", 0),
-                 ("", 0),
-                 ("", 0),
-                 ("", 0),
-                 ("", 0)]#masl
 
 
 def get_conv_func(var):
@@ -112,13 +140,17 @@ def get_conv_func(var):
     else:
         return lambda x : x
 
-def get_timestaps(site):
+def get_timestamps(site):
     data = pd.read_csv(OBS_SITES[site])["TIMESTAMP"].__array__()
     return f"{data[0]}01", f"{data[-1]}31"
 
 def get_data(fpath, var=None):
     f = get_conv_func(var)
     return f(pd.read_csv(fpath)[FLUXNET_FULLSET_VARS[var][0]].__array__())
+
+def get_qc(site):
+    fpath = OBS_SITES[site]
+    return pd.read_csv(fpath)[OBS_VARS["nee"][-1]].__array__() > 0.75
 
 def get_ref_data(site, var=None):
     assert var in ['nee','gpp','reco', "tas"]
@@ -134,9 +166,14 @@ def calc_LHV(temp):
 
 def get_aet(site):
     mle = pd.read_csv(OBS_SITES[site])[OBS_VARS["mle"][0]].__array__() # W m-2
+    qc_le = pd.read_csv(OBS_SITES[site])[OBS_VARS["mle"][-1]].__array__() > 0.75
+    qc_ta = pd.read_csv(OBS_SITES[site])[OBS_VARS["tas"][-1]].__array__() > 0.75
+    mask = np.logical_not(np.logical_and(qc_le, qc_ta))
     tas = get_ref_data(site, "tas")
     mle *= 1e-6 # convert to MJ m-2 s-1
-    return (mle / calc_LHV(tas)) * 2.62974e6 ## kg m-2 month-1
+    aet = (mle / calc_LHV(tas)) * 2.62974e6 ## kg m-2 month-1
+    aet[mask] = 1e+20
+    return aet
 
 def create_arrs(var, mod_var=None):
     lat = []
@@ -222,8 +259,8 @@ def timeseries(fname = None,
 
         # Create netCDF variables
         S = dset.createVariable("station", 'i4', ("station",), fill_value=999999)
-        X  = dset.createVariable("lon", 'f4', ("station",), fill_value=1e+20)
-        Y =  dset.createVariable("lat", 'f4', ("station",), fill_value=1e+20)
+        X  = dset.createVariable("lon", 'f4', ("station",))
+        Y =  dset.createVariable("lat", 'f4', ("station",))
         SN = dset.createVariable("station_name", '<U6', ("station", ),fill_value= '------')
         T  = dset.createVariable("time", 'i4', ("time",), fill_value=999999)
 
@@ -299,7 +336,7 @@ def cf_timeseries(fname = None,
     dset.createDimension("time",size=arr.size)
 
     # Data description
-    dset.description = f"FLUXNET 2015 DATA - {set} {OBS_VARS[var][2]}"
+    dset.description = f"FLUXNET 2015 DATA - {set} {OBS_VARS[var][2]} {OBS_VARS[var][0]}"
     dset.source = f'Forcing data for DVM - {descr}'
     dset.history= f'Created: {time_mod.ctime(time_mod.time())}'
     if reference is not None:
@@ -312,7 +349,7 @@ def cf_timeseries(fname = None,
     SN = dset.createVariable("station_name", '<U6')
     T  = dset.createVariable("time", 'i4', ("time",))
 
-    D  = dset.createVariable(var, 'f8', ("time",))
+    D  = dset.createVariable(var, 'f8', ("time",), fill_value=1e+20)
 
     T[...] = time_dim.__array__()
     T.units    = time_unit
@@ -405,7 +442,7 @@ def write_ref_data(VAR, site):
 
     assert VAR in ['nee', 'gpp', 'reco', "aet"]
 
-    start, end = get_timestaps(site)
+    start, end = get_timestamps(site)
     idx = pd.date_range(start, end, freq='MS')
 
     # time_data = np.arange(idx.size, dtype='i4')
@@ -429,6 +466,10 @@ def write_ref_data(VAR, site):
         arr = get_aet(site)
     else:
         arr = get_ref_data(site, VAR)
+
+    if VAR in ["nee", "gpp", "reco"]:
+        mask =  np.logical_not(get_qc(site))
+        arr[mask] = 1e+20
 
     la = SITES_COORDINATES[site][0][0]
     lo = SITES_COORDINATES[site][1][0]
