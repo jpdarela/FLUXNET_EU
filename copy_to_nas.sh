@@ -14,7 +14,7 @@ done
 cp  ./FLUXNET2015_gridlist.txt  /home/jpdarela/NAS/z/data/Joao/FLUXNET/
 
 ## update input data
-FILES1="pr ps rsds tas vpd wind"
+FILES1="pr ps rsds tas vpd wind hurs"
 destdir1="/home/jpdarela/NAS/z/data/Joao/FLUXNET/input_data"
 
 for val1 in $FILES1; do
