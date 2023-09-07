@@ -5,7 +5,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset
 import cftime as cf
-from copy import deepcopy
 from numba import vectorize, float64, float32
 
 SITES = ['CH-Dav', 'DE-Tha', 'DE-Hai', 'DE-Lnf', 'DE-Obe', 'CH-Lae',

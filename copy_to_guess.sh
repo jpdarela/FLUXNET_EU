@@ -5,21 +5,21 @@ FILES="nee reco aet gpp"
 # FOLDER="bugfix_et"
 FOLDER="parent_commit"
 
-destdir="/home/jpdarela/Desktop/hyd_europe/$FOLDER/guess4.1_hydraulics/FLUXNET_results/flx_ref/"
+destdir="/home/jpdarela/guess/FLUXNET2015/ref/"
 
 for val in $FILES; do
-    cp $val* $destdir
+    mv $val* $destdir
 done
 
 ## update FLUXNET2015_gridlist
-cp  ./FLUXNET2015_gridlist.txt  /home/jpdarela/Desktop/hyd_europe/$FOLDER/guess4.1_hydraulics/data/gridlist/
+mv  ./FLUXNET2015_gridlist.txt  /home/jpdarela/guess/grd/
 
 ## update input data
 FILES1="pr ps rsds tas vpd wind"
-destdir1="/home/jpdarela/Desktop/hyd_europe/$FOLDER/guess4.1_hydraulics/data/env/FLUXNET2015/"
+destdir1="/home/jpdarela/guess/FLUXNET2015/"
 
 for val1 in $FILES1; do
-    cp $val1* $destdir1
+    mv $val1* $destdir1
 done
 
 rm -rf *.nc
