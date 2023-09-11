@@ -79,7 +79,9 @@ SITES_COORDINATES = {'SITE': ['Latitude', 'Longitude', 'name', 'filepath'],
                      'Loo': [np.array([52.1665], 'f4'), np.array([5.7435], 'f4'), 'NL-Loo',
                              './FLX_NL-Loo_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_NL-Loo_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
 
-                     }
+                     'RuR': [np.array([50.6219], 'f4'), np.array([6.3041], 'f4'), 'DE-RuR',
+                             './FLX_DE-RuR_FLUXNET2015_FULLSET_2011-2014_1-4/FLX_DE-RuR_FLUXNET2015_ERAI_DD_1989-2014_1-4.csv'],
+                    }
 
 # # Variables METAdata (Fprcing)
 FLUXNET_FULLSET_VARS = {'tas':  ["TA_ERA", "Air temperature, gapfilled using MDS method", "K", 'air_temperature'], # FLUXNET celsius
@@ -116,7 +118,8 @@ OBS_SITES = {'SITE': 'filepath',
              'Pue': './FLX_FR-Pue_FLUXNET2015_FULLSET_2000-2014_2-4/FLX_FR-Pue_FLUXNET2015_FULLSET_MM_2000-2014_2-4.csv',
              'Cpz': './FLX_IT-Cpz_FLUXNET2015_FULLSET_1997-2009_1-4/FLX_IT-Cpz_FLUXNET2015_FULLSET_MM_1997-2009_1-4.csv',
              'Lav': './FLX_IT-Lav_FLUXNET2015_FULLSET_2003-2014_2-4/FLX_IT-Lav_FLUXNET2015_FULLSET_MM_2003-2014_2-4.csv',
-             'Loo': './FLX_NL-Loo_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_NL-Loo_FLUXNET2015_FULLSET_MM_1996-2014_1-4.csv'}
+             'Loo': './FLX_NL-Loo_FLUXNET2015_FULLSET_1996-2014_1-4/FLX_NL-Loo_FLUXNET2015_FULLSET_MM_1996-2014_1-4.csv',
+             'RuR': './FLX_DE-RuR_FLUXNET2015_FULLSET_2011-2014_1-4/FLX_DE-RuR_FLUXNET2015_FULLSET_MM_2011-2014_1-4.csv'}
 
 
 OBS_VARS = {"nee"  : ("NEE_VUT_REF", "kg m-2 month-1", "Net Ecosystem Exchange", "NEE_VUT_REF_QC"), #fluxnet

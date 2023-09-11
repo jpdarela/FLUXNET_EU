@@ -2,8 +2,7 @@
 
 ## copy reference data to the guess dir
 FILES="nee reco aet gpp"
-# FOLDER="bugfix_et"
-FOLDER="parent_commit"
+
 
 destdir="/home/jpdarela/guess/FLUXNET2015/ref/"
 

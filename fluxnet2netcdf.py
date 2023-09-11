@@ -13,7 +13,7 @@ SITES =  ['Dav', 'Tha', 'Hai', 'Lnf',
           'Sor', 'Col', 'Ren', 'Fyo',
           'Bra', 'Vie', 'Hyy', 'Let',
           'Sod', 'Fon', 'Pue', 'Cpz',
-          'Lav', 'Loo']
+          'Lav', 'Loo', 'RuR']
 
 def main():
     for variable in VAR:
