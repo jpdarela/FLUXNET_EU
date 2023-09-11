@@ -3,6 +3,4 @@ ARCHIVE
 FLX*
 *.nc
 *.png
-prep_FLUXNET_2015_CF
-data-availability-20220805141634.csv
 .python-version
