@@ -4,3 +4,4 @@ FLX*
 *.nc
 *.png
 .python-version
+__pycache__
