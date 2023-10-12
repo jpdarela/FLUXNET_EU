@@ -151,7 +151,7 @@ def Vsat_slope(Tair:np.array,method=3) -> np.array:
     methods = ("Sonntag_1990","Alduchov_1996","Allen_1998")
     assert method <= 3 or method >= 1, "Methods:\n1 - Sonntag_1990\n2 - Alduchov_1996\n3 - Allen_1998"
     formula = methods[method - 1]
-    print(f"Calculating RH from (TAIR, VPD) with Esat slope using the formula: {formula}")
+    print(f"Calculating RH from (TAIR, VPD) with Esat using the formula: {formula}")
 
     if formula == "Sonntag_1990":
         a = 611.2
@@ -180,8 +180,10 @@ def Vsat_slope(Tair:np.array,method=3) -> np.array:
 def VPD2RH(Tair:np.array, VPD:np.array) -> np.array:
     """Estimate hurs from Tair (°C) and VPD (kPa)"""
     # Translated to python from the bigleaf R package
-    esat =  Vsat_slope(Tair)[0]
-    return 1.0 - (VPD / esat)
+    svp = Vsat_slope(Tair)[0]
+    avp = svp - VPD
+
+    return (avp / svp) * 100
 
 
 def mcwd_calc(et, pr, TIME_AXIS):
@@ -228,7 +230,7 @@ def mcwd_fluxnet2015(site, plot=False):
     #Get aet
     place = site.split("-")[-1]
     ds = Dataset(f"aet_{place}_FLUXNET2015.nc")
-    aet = ds["aet"][...].mean()
+    aet = ds["et"][...].mean()
 
     mcwd, tidx = mcwd_calc(np.repeat(aet, pr.size), pr, ncvar["time"][...])
 

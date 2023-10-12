@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ## copy reference data to the guess dir
-FILES="nee reco aet gpp"
+FILES="nee reco et gpp"
 
 
 destdir="/home/jpdarela/NAS/z/data/Joao/FLUXNET/ref_data"

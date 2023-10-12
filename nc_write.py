@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
-import os
 from pathlib import Path
+from sys import platform
+import os
 import time as time_mod
+
 from netCDF4 import Dataset
+
 import cftime
 import numpy as np
 import pandas as pd
+
 from conversions import convert_pr, convert_ps, convert_ta, convert_vpd, VPD2RH
 
 
@@ -127,7 +131,7 @@ OBS_VARS = {"nee"  : ("NEE_VUT_REF", "kg m-2 month-1", "Net Ecosystem Exchange",
             "reco" : ("RECO_NT_VUT_REF", "kg m-2 month-1", "Ecosystem Respiration", ""),
             "mle"  : ("LE_F_MDS", "W m-2", "Latent Heat Flux", "LE_F_MDS_QC"), # COnvert to AET
             "tas"  : ("TA_F_MDS", "celcius", "air temperature", "TA_F_MDS_QC"),
-            "aet"  : ("AET", "kg m-2 month-1", "Actual Evapotranspiration")} # Not in the dataset ()}
+            "et"  : ("AET", "kg m-2 month-1", "Actual Evapotranspiration")} # Not in the dataset ()}
 
 
 def get_conv_func(var):
@@ -208,6 +212,10 @@ def create_arrs(var, mod_var=None):
     return out_data, np.concatenate(lat), np.concatenate(lon), np.array(names, dtype="<U7")
 
 def create_gridlist(fname):
+    endline = "\r\n"
+    if platform == "win32":
+        endline = "\n"
+    print(platform)
     with open(f"{fname}.txt", 'w', encoding="utf-8") as fh:
         for k, v in SITES_COORDINATES.items():
             # print(k, v)
@@ -216,7 +224,7 @@ def create_gridlist(fname):
             lat = v[0][0]
             lon = v[1][0]
             fname = v[2]
-            fh.write(f"{str(round(lon, 2))}\t{str(round(lat, 2))}\t{fname}\r\n")
+            fh.write(f"{str(round(lon, 2))}\t{str(round(lat, 2))}\t{fname}{endline}")
 
 def timeseries(fname = None,
               arr=None,
@@ -341,7 +349,8 @@ def cf_timeseries(fname = None,
     # Data description
     dset.description = f"FLUXNET 2015 DATA - {set} {OBS_VARS[var][2]} {OBS_VARS[var][0]}"
     dset.source = f'Forcing data for DVM - {descr}'
-    dset.history= f'Created: {time_mod.ctime(time_mod.time())}'
+    dset.history= f'Created: {time_mod.ctime(time_mod.time())} - Single Timeseries CF conventions 1.10 Appendix H.2.3'
+    dset.Conventions = "CF-1.10"
     if reference is not None:
         dset.reference = reference
     dset.featureType = "timeSeries"
@@ -415,7 +424,7 @@ def write_site_nc(VAR, mod=None):
                 vpd, lat, lon, names = create_arrs('vpd')
                 # TODO error
                 tair = create_arrs('tas')[0] - 273.15
-                arr = 100.0 * VPD2RH(tair, (vpd * (-1)) * 0.1)
+                arr = VPD2RH(tair, (vpd * (-1)))
                 success = True
                 # assert False, "dont do hurs - error"
             except:
@@ -443,7 +452,7 @@ def write_ref_data(VAR, site):
 
     """write FLUXNET2015 FULLSET REFERENCE Variable to a netCDF4 file """
 
-    assert VAR in ['nee', 'gpp', 'reco', "aet"]
+    assert VAR in ['nee', 'gpp', 'reco', "et"]
 
     start, end = get_timestamps(site)
     idx = pd.date_range(start, end, freq='MS')
@@ -465,7 +474,7 @@ def write_ref_data(VAR, site):
                 'units': time_units,
                 'calendar': calendar}
 
-    if VAR == "aet":
+    if VAR == "et":
         arr = get_aet(site)
     else:
         arr = get_ref_data(site, VAR)

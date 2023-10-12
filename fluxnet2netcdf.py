@@ -5,7 +5,7 @@ from conversions import mod_mJJAs, mod_make_drought
 VAR = 'tas', 'vpd', 'hurs', 'ps', 'pr', 'wind', 'rsds'
 
 # Reference variables
-REF = 'gpp', 'reco', 'nee', 'aet'
+REF = 'gpp', 'reco', 'nee', 'et'
 
 # FLUXNET 2015 Site names
 SITES =  []
