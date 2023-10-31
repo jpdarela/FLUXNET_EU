@@ -7,9 +7,6 @@ from netCDF4 import Dataset
 import cftime as cf
 from numba import vectorize, float64, float32
 
-SITES = ['CH-Dav', 'DE-Tha', 'DE-Hai', 'DE-Lnf', 'DE-Obe', 'CH-Lae',
-         'CZ-BK1', 'DE-Lkb', 'DK-Sor', 'IT-Col', 'IT-Ren', 'RU-Fyo']
-
 # GLOBAL
 Pa2kPa = 1e-3
 idx = pd.date_range("19890101", "20141231", freq="D")
