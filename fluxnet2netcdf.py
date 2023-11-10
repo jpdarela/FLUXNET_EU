@@ -1,5 +1,9 @@
+from os import makedirs
 from nc_write import write_ref_data, write_site_nc, create_gridlist, SITES_COORDINATES
 from conversions import mod_mJJAs, mod_make_drought
+
+makedirs("./driver", exist_ok=True)
+makedirs("./ref", exist_ok=True)
 
 # Forcing data
 VAR = 'tas', 'vpd', 'hurs', 'ps', 'pr', 'wind', 'rsds'
@@ -20,7 +24,7 @@ def main():
 
         write_site_nc(variable)
 
-    create_gridlist("FLUXNET2015_gridlist")
+    create_gridlist("FLUXNET2015")
 
     for variable in REF:
         for site in SITES:

@@ -1,7 +1,4 @@
 .vscode
-ARCHIVE
-FLX*
-*.nc
-*.png
-.python-version
 __pycache__
+FLUXNET2015
+FLUXNET2018
