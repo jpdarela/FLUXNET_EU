@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 
-IGBP_LAND_COVER = ["CVM", "DBF", "DNF", "EBF", "ENF", "MF"]
+IGBP_LAND_COVER = ["CVM", "DBF", "DNF", "EBF", "ENF", "MF", "SAV"]
 
 fluxnet_data = Path("./FLUXNET2020/")
 arr_da_lenght = 11322
