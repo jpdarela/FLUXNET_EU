@@ -31,7 +31,7 @@ def site_coord_dict(fl):
     tstart = {}
     idx = []
     driver_data_str = "*_FLUXNET2015_ERAI_DD_1989-*"
-    ref_data_str = "*_FLUXNET2015_FULLSET_MM_*"
+    ref_data_str = "*_FLUXNET2015_FULLSET_DD_*"
     for k, v in fl.items():
         ref_dict[k] = v[-1].glob(ref_data_str).__next__()
         driver_dict[k] = [v[0], v[1], v[2], v[3].glob(driver_data_str).__next__()]

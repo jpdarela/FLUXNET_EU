@@ -9,9 +9,8 @@ folders = [f for f in folder_path.iterdir() if f.is_dir()]
 
 to_exclude = ["*AUXMETEO*", "*AUXNEE*", "*FLUXNET2015_ERAI_HH*",
               "*FLUXNET2015_ERAI_MM*", "*FLUXNET2015_ERAI_WW*",
-              "*FLUXNET2015_ERAI_YY*", "*FLUXNET2015_FULLSET_DD*",
-              "*FLUXNET2015_FULLSET_HH*", "*FLUXNET2015_FULLSET_WW*",
-              "*FLUXNET2015_FULLSET_YY*"]
+              "*FLUXNET2015_ERAI_YY*", "*FLUXNET2015_FULLSET_HH*",
+              "*FLUXNET2015_FULLSET_WW*", "*FLUXNET2015_FULLSET_YY*"]
 
 for folder in folders:
     print(folder)

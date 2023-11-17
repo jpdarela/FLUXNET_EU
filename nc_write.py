@@ -55,9 +55,14 @@ def get_conv_func(var):
     else:
         return lambda x : x
 
-def get_timestamps(site):
-    data = pd.read_csv(OBS_SITES[site])["TIMESTAMP"].__array__()
-    return f"{data[0]}01", f"{data[-1]}31"
+def get_timestamps(site, mon=True):
+    if mon:
+        data = pd.read_csv(OBS_SITES[site])["TIMESTAMP"].__array__()
+        return f"{data[0]}01", f"{data[-1]}31"
+    else:
+        data = pd.read_csv(OBS_SITES[site])["TIMESTAMP"].__array__()[:arr_da_lenght]
+        return f"{data[0]}", f"{data[-1]}"
+
 
 def get_data(fpath, var=None):
     f = get_conv_func(var)
@@ -70,19 +75,19 @@ def get_qc(site):
 def get_ref_data(site, var=None):
     assert var in ['nee','gpp','reco', "tas"]
     if var == 'tas':
-        return pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__()
+        return pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__()[:arr_da_lenght]
     else:
         # need to convert C fluxes to make comparable
-        return pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__() * 0.0304368 # gm -2 d-1 => kg m-2 month-1
+        return pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__()[:arr_da_lenght] * 0.0304368 # gm -2 d-1 => kg m-2 month-1
 
 def calc_LHV(temp):
     f = np.vectorize(lambda P: 2.501 - (2.361 * 10e-3) * P)
     return f(temp)
 
 def get_aet(site):
-    mle = pd.read_csv(OBS_SITES[site])[OBS_VARS["mle"][0]].__array__() # W m-2
-    qc_le = pd.read_csv(OBS_SITES[site])[OBS_VARS["mle"][-1]].__array__() > 0.75
-    qc_ta = pd.read_csv(OBS_SITES[site])[OBS_VARS["tas"][-1]].__array__() > 0.75
+    mle = pd.read_csv(OBS_SITES[site])[OBS_VARS["mle"][0]].__array__()[:arr_da_lenght] # W m-2
+    qc_le = pd.read_csv(OBS_SITES[site])[OBS_VARS["mle"][-1]].__array__()[:arr_da_lenght] > 0.75
+    qc_ta = pd.read_csv(OBS_SITES[site])[OBS_VARS["tas"][-1]].__array__()[:arr_da_lenght] > 0.75
     mask = np.logical_not(np.logical_and(qc_le, qc_ta))
     tas = get_ref_data(site, "tas")
     mle *= 1e-6 # convert to MJ m-2 s-1
@@ -360,8 +365,9 @@ def write_ref_data(VAR, site):
 
     assert VAR in ['nee', 'gpp', 'reco', "et"]
 
-    start, end = get_timestamps(site)
-    idx = pd.date_range(start, end, freq='MS')
+    start, end = get_timestamps(site, mon=False)
+    freq="D" # MS
+    idx = pd.date_range(start, end, freq=freq)
 
     # time_data = np.arange(idx.size, dtype='i4')
 
