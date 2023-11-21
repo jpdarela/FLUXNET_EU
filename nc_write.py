@@ -33,14 +33,21 @@ FLUXNET_FULLSET_VARS = {'tas':  ["TA_ERA", "Air temperature, gapfilled using MDS
                         'hurs': ["RH_F","Relative humidity, range 0-100", "%", 'relative_humidity']}
 
 # Reference data
+# Monthly
+# OBS_VARS = {"nee"  : ("NEE_VUT_REF", "kg m-2 month-1", "Net Ecosystem Exchange", "NEE_VUT_REF_QC"), #fluxnet
+#             "gpp"  : ("GPP_NT_VUT_REF", "kg m-2 month-1", "Gross Primary Productivity", ""),
+#             "reco" : ("RECO_NT_VUT_REF", "kg m-2 month-1", "Ecosystem Respiration", ""),
+#             "mle"  : ("LE_F_MDS", "W m-2", "Latent Heat Flux", "LE_F_MDS_QC"), # COnvert to AET
+#             "tas"  : ("TA_F_MDS", "celcius", "air temperature", "TA_F_MDS_QC"),
+#             "et"  : ("AET", "kg m-2 month-1", "Actual Evapotranspiration")} # Not in the dataset ()}
 
-OBS_VARS = {"nee"  : ("NEE_VUT_REF", "kg m-2 month-1", "Net Ecosystem Exchange", "NEE_VUT_REF_QC"), #fluxnet
-            "gpp"  : ("GPP_NT_VUT_REF", "kg m-2 month-1", "Gross Primary Productivity", ""),
-            "reco" : ("RECO_NT_VUT_REF", "kg m-2 month-1", "Ecosystem Respiration", ""),
+
+OBS_VARS = {"nee"  : ("NEE_VUT_REF", "kg m-2 day-1", "Net Ecosystem Exchange", "NEE_VUT_REF_QC"), #fluxnet
+            "gpp"  : ("GPP_NT_VUT_REF", "kg m-2 day-1", "Gross Primary Productivity", ""),
+            "reco" : ("RECO_NT_VUT_REF", "kg m-2 day-1", "Ecosystem Respiration", ""),
             "mle"  : ("LE_F_MDS", "W m-2", "Latent Heat Flux", "LE_F_MDS_QC"), # COnvert to AET
             "tas"  : ("TA_F_MDS", "celcius", "air temperature", "TA_F_MDS_QC"),
-            "et"  : ("AET", "kg m-2 month-1", "Actual Evapotranspiration")} # Not in the dataset ()}
-
+            "et"  : ("AET", "kg m-2 day-1", "Actual Evapotranspiration")} # Not in the dataset ()}
 
 def get_conv_func(var):
 
@@ -73,25 +80,38 @@ def get_qc(site):
     return pd.read_csv(fpath)[OBS_VARS["nee"][-1]].__array__() > 0.75
 
 def get_ref_data(site, var=None):
+    # cv_factor = 0.0304368 # gm -2 d-1 => kg m-2 month-1
+    cv_factor = 0.001 # kg m-2 d-1 => kg m-2 day-1
     assert var in ['nee','gpp','reco', "tas"]
     if var == 'tas':
         return pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__()[:arr_da_lenght]
     else:
         # need to convert C fluxes to make comparable
-        return pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__()[:arr_da_lenght] * 0.0304368 # gm -2 d-1 => kg m-2 month-1
+        return pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__()[:arr_da_lenght] * cv_factor
 
 def calc_LHV(temp):
+    """Harrison, L. P. 1963. Fundamentals concepts and definitions relating to humidity.
+       In Wexler, A (Editor) Humidity and moisture Vol 3, Reinhold Publishing Co., N.Y.
+       https://www.fao.org/3/x0490e/x0490e0k.htm#annex%203.%20background%20on%20physical%20parameters%20used%20in%20evapotranspiration%20computatio"""
+
     f = np.vectorize(lambda P: 2.501 - (2.361 * 10e-3) * P)
     return f(temp)
 
 def get_aet(site):
+    """
+       https://www.fao.org/3/x0490e/x0490e00.htm
+       https://earthscience.stackexchange.com/questions/20733/fluxnet15-how-to-convert-latent-heat-flux-to-actual-evapotranspiration
+    """
     mle = pd.read_csv(OBS_SITES[site])[OBS_VARS["mle"][0]].__array__()[:arr_da_lenght] # W m-2
     qc_le = pd.read_csv(OBS_SITES[site])[OBS_VARS["mle"][-1]].__array__()[:arr_da_lenght] > 0.75
     qc_ta = pd.read_csv(OBS_SITES[site])[OBS_VARS["tas"][-1]].__array__()[:arr_da_lenght] > 0.75
     mask = np.logical_not(np.logical_and(qc_le, qc_ta))
     tas = get_ref_data(site, "tas")
     mle *= 1e-6 # convert to MJ m-2 s-1
-    aet = (mle / calc_LHV(tas)) * 2.62974e6 ## kg m-2 month-1
+    # cv_factor = 2.62974e6 ##from kg m-2 s-1 to kg m-2 month-1
+    cv_factor = 86400.0 ##from kg m-2 s-1 to kg m-2 day-1
+
+    aet = (mle / calc_LHV(tas)) * cv_factor ## convert
     aet[mask] = 1e+20
     return aet
 
