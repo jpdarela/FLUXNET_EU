@@ -36,8 +36,8 @@ def site_coord_dict(fl):
         ref_dict[k] = v[-1].glob(ref_data_str).__next__()
         driver_dict[k] = [v[0], v[1], v[2], v[3].glob(driver_data_str).__next__()]
         tstamps = pd.read_csv(ref_dict[k], index_col="TIMESTAMP", parse_dates=True).index
-        start = f"{tstamps[0]}01"
-        end = f"{tstamps[-1]}31"
+        start = f"{tstamps[0]}"[:10]
+        end = f"{tstamps[-1]}"[:10]
         tstart[k] = [start, end]
         idx.append(k)
 
