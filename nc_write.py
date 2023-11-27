@@ -83,11 +83,16 @@ def get_ref_data(site, var=None):
     # cv_factor = 0.0304368 # gm -2 d-1 => kg m-2 month-1
     cv_factor = 0.001 # kg m-2 d-1 => kg m-2 day-1
     assert var in ['nee','gpp','reco', "tas"]
+
+    ref_data = pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__()[:arr_da_lenght]
+    msk = ref_data == -9999
     if var == 'tas':
-        return pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__()[:arr_da_lenght]
+        return ref_data
     else:
         # need to convert C fluxes to make comparable
-        return pd.read_csv(OBS_SITES[site])[OBS_VARS[var][0]].__array__()[:arr_da_lenght] * cv_factor
+        cv = ref_data * cv_factor
+        cv[msk] = -9999.0
+        return cv
 
 def calc_LHV(temp):
     """Harrison, L. P. 1963. Fundamentals concepts and definitions relating to humidity.
@@ -112,7 +117,7 @@ def get_aet(site):
     cv_factor = 86400.0 ##from kg m-2 s-1 to kg m-2 day-1
 
     aet = (mle / calc_LHV(tas)) * cv_factor ## convert
-    aet[mask] = 1e+20
+    aet[mask] = -9999.0
     return aet
 
 def create_arrs(var, mod_var=None):
@@ -206,7 +211,7 @@ def timeseries(fname = None,
         SN = dset.createVariable("station_name", '<U6', ("station", ),fill_value= '------')
         T  = dset.createVariable("time", 'i4', ("time",), fill_value=999999)
 
-        D  = dset.createVariable(var, 'f4', ("station", "time"), fill_value=1e+20)
+        D  = dset.createVariable(var, 'f4', ("station", "time"), fill_value=-9999.0)
 
         S[...] = np.arange(arr.shape[0])
         T[...] = time_dim.__array__()
@@ -292,7 +297,7 @@ def cf_timeseries(fname = None,
     SN = dset.createVariable("station_name", '<U6')
     T  = dset.createVariable("time", 'i4', ("time",))
 
-    D  = dset.createVariable(var, 'f8', ("time",), fill_value=1e+20)
+    D  = dset.createVariable(var, 'f8', ("time",), fill_value=-9999)
 
     T[...] = time_dim.__array__()
     T.units    = time_unit
@@ -413,7 +418,7 @@ def write_ref_data(VAR, site):
 
     if VAR in ["nee", "gpp", "reco"]:
         mask =  np.logical_not(get_qc(site))
-        arr[mask] = 1e+20
+        arr[mask] = -9999.0
 
     la = SITES_COORDINATES[site][0]
     lo = SITES_COORDINATES[site][1]
@@ -426,10 +431,10 @@ def write_ref_data(VAR, site):
 
 if __name__ == "__main__":
     pass
-    for v in ['tas', 'vpd', 'hurs', 'ps', 'pr', 'wind', 'rsds']:
-        write_site_nc(v)
-    for i, site in enumerate(SITES_COORDINATES.keys()):
-        for v in ['tas', 'vpd', 'hurs', 'ps', 'pr', 'wind', 'rsds']:
-            write_site_nc(v)
-        for v in ['nee', 'gpp', 'reco', "et"]:
-            write_ref_data(v, site)
+    # for v in ['tas', 'vpd', 'hurs', 'ps', 'pr', 'wind', 'rsds']:
+    #     write_site_nc(v)
+    # for i, site in enumerate(SITES_COORDINATES.keys()):
+    #     for v in ['tas', 'vpd', 'hurs', 'ps', 'pr', 'wind', 'rsds']:
+    #         write_site_nc(v)
+    #     for v in ['nee', 'gpp', 'reco', "et"]:
+    #         write_ref_data(v, site)
