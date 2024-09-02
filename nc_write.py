@@ -154,13 +154,24 @@ def create_gridlist(fname):
     endline = "\r\n"
     if platform == "win32":
         endline = "\n"
-    print(platform)
-    with open(f"{Path('driver')}/{fname}.grd", 'w', encoding="utf-8") as fh:
+    gridlist_path = f"{Path('driver')}/{fname}.grd"
+    gridlist_cf_path = f"{Path('driver')}/{fname}_cf.grd"
+
+    print('Writing gridlist to', gridlist_path, ', platform is', platform)
+    with open(gridlist_path, 'w', encoding="utf-8") as fh:
         for k, v in SITES_COORDINATES.items():
             lat = v[0]
             lon = v[1]
-            fname = v[2]
-            fh.write(f"{lon:.2f}\t{lat:.2f}\t{fname}{endline}")
+            site_name = v[2]
+            fh.write(f"{lon:.2f}\t{lat:.2f}\t{site_name}{endline}")
+
+    gridcell_index = 0
+    print('Writing gridlist_cf to', gridlist_cf_path, ', platform is', platform)
+    with open(gridlist_cf_path, 'w', encoding="utf-8") as fh:
+        for k, v in SITES_COORDINATES.items():
+            site_name = v[2]
+            fh.write(f"{gridcell_index}\t{site_name}{endline}")
+            gridcell_index += 1
 
 def timeseries(fname = None,
               arr=None,
