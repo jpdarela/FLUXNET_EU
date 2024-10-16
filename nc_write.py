@@ -19,8 +19,7 @@ for eddy covariance data. Sci Data 7, 225 (2020). https://doi.org/10.1038/s41597
 2 - https://www.icos-cp.eu/data-products/2G60-ZHAK - ICOS Ecosystem Station data product DOI: https://doi.org/10.18160/2G60-ZHAK
 """
 
-
-# # Variables METAdata (Fprcing)
+# # Meteorological forcing data
 FLUXNET_FULLSET_VARS = {'tas':  ["TA_ERA", "Air temperature, gapfilled using MDS method", "K", 'air_temperature'], # FLUXNET celsius
                         'rsds': ["SW_IN_ERA", "Shortwave radiation, incoming, gapfilled using MDS", 'W m-2',
                                  "surface_downwelling_shortwave_flux_in_air"],
@@ -33,15 +32,6 @@ FLUXNET_FULLSET_VARS = {'tas':  ["TA_ERA", "Air temperature, gapfilled using MDS
                         'hurs': ["RH_F","Relative humidity, range 0-100", "%", 'relative_humidity']}
 
 # Reference data
-# Monthly
-# OBS_VARS = {"nee"  : ("NEE_VUT_REF", "kg m-2 month-1", "Net Ecosystem Exchange", "NEE_VUT_REF_QC"), #fluxnet
-#             "gpp"  : ("GPP_NT_VUT_REF", "kg m-2 month-1", "Gross Primary Productivity", ""),
-#             "reco" : ("RECO_NT_VUT_REF", "kg m-2 month-1", "Ecosystem Respiration", ""),
-#             "mle"  : ("LE_F_MDS", "W m-2", "Latent Heat Flux", "LE_F_MDS_QC"), # COnvert to AET
-#             "tas"  : ("TA_F_MDS", "celcius", "air temperature", "TA_F_MDS_QC"),
-#             "et"  : ("AET", "kg m-2 month-1", "Actual Evapotranspiration")} # Not in the dataset ()}
-
-
 OBS_VARS = {"nee"  : ("NEE_VUT_REF", "kg m-2 day-1", "Net Ecosystem Exchange", "NEE_VUT_REF_QC"), #fluxnet
             "gpp"  : ("GPP_NT_VUT_REF", "kg m-2 day-1", "Gross Primary Productivity", ""),
             "reco" : ("RECO_NT_VUT_REF", "kg m-2 day-1", "Ecosystem Respiration", ""),
@@ -69,7 +59,6 @@ def get_timestamps(site, mon=True):
     else:
         data = pd.read_csv(OBS_SITES[site])["TIMESTAMP"].__array__()[:arr_da_lenght]
         return f"{data[0]}", f"{data[-1]}"
-
 
 def get_data(fpath, var=None):
     f = get_conv_func(var)
@@ -106,8 +95,8 @@ def get_aet(site):
        https://earthscience.stackexchange.com/questions/20733/fluxnet15-how-to-convert-latent-heat-flux-to-actual-evapotranspiration
     """
     mle = pd.read_csv(OBS_SITES[site])[OBS_VARS["mle"][0]].__array__()[:arr_da_lenght] # W m-2
-    qc_le = pd.read_csv(OBS_SITES[site])[OBS_VARS["mle"][-1]].__array__()[:arr_da_lenght] > 0.75
-    qc_ta = pd.read_csv(OBS_SITES[site])[OBS_VARS["tas"][-1]].__array__()[:arr_da_lenght] > 0.75
+    qc_le = pd.read_csv(OBS_SITES[site])[OBS_VARS["mle"][-1]].__array__()[:arr_da_lenght] >= 0.75
+    qc_ta = pd.read_csv(OBS_SITES[site])[OBS_VARS["tas"][-1]].__array__()[:arr_da_lenght] >= 0.75
     mask = np.logical_not(np.logical_and(qc_le, qc_ta))
     tas = get_ref_data(site, "tas")
     mle *= 1e-6 # convert to MJ m-2 s-1

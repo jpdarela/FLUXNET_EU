@@ -1,5 +1,7 @@
 # Intro
 
+[![DOI](https://zenodo.org/badge/580744536.svg)](https://doi.org/10.5281/zenodo.13941723)
+
 These scripts can be used to convert FLUXNET2015 CSV files into netCDF files. The meteorological data files are prepared to drive the LPJ-GUESS model. We use the carbon and water fluxes from FLUXNET2015 as reference data for model testing and evaluation. Thanks to Ben and Konni for their contributions. Note that we only convert daily values; sub-daily data conversion is not implemented.
 
 What these scripts do:
@@ -26,7 +28,7 @@ Create some Precipitation (pr) and VPD (vpd) datasets with modified values (for 
 
 Currently we have the folowing [sites](./driver/FLUXNET2015.grd) configured.
 
-Everything is set to convert those sites. You just need to download the appropriate data from [FLUXNET 2015 repository](https://fluxnet.org/login/?redirect_to=/data/download-data/) and unzip the files for each site in a child directory. All folders with data for each FLUXNET site must be inside this child directory. You can use the [clean_csv.py script](./clean_csvs.py) to remove unused subfolders in the FLUXNET zipped archives (after unzip it).
+Everything is set to convert those sites. You just need to download the appropriate data from [FLUXNET 2015 repository](https://fluxnet.org/login/?redirect_to=/data/download-data/) and unzip the files for each site in a child directory. All folders with data for each FLUXNET site must be inside this child directory. You will need to edit the script [site_data.py](./site_data.py) in line 12. The variable ```fluxnet_data``` must point to this folder, all sites included will be processed. You can use the [clean_csv.py script](./clean_csvs.py) to remove unused subfolders in the FLUXNET zipped archives (after unzip it).
 
 With that, run the main script:
 
@@ -43,6 +45,10 @@ Metadata about variables used here can be found in the [nc_write.py script](./nc
 There are some details ommited in this readme. Feel free to reach me, I can help you. If you are interested in modify this code feel free to do pull requests or wathever.
 
 FLUXNET data must be downloaded from the [FLUXNET 2015 repository](https://fluxnet.org/login/?redirect_to=/data/download-data/) (Registration required). The dataset for which the main script is configured to can be found here: <https://www.icos-cp.eu/data-products/2G60-ZHAK>
+
+## Cite
+
+Darela Filho, J. P. and Gregor, K.: Fluxnet_to_Netcdf: Convert Fluxnet2015 Csv Files to Netcdf Format, Zenodo [code], https://doi.org/https://doi.org/10.5281/zenodo.13941723, 2024.
 
 ## References
 
