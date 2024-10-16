@@ -16,35 +16,35 @@ Observations with quality flags lower than 0.75 were excluded from reference dat
 
 Create one file per variable for all sites for driving (climatic) data.
 
-Evapotranspiration calculated from Temperature and Latent Heat flux (Allen et al., 1998)
+Evapotranspiration is calculated from Temperature and Latent Heat flux (Allen et al., 1998)
 
 Driving variables cover the period from 1989-12-31 to 2019-12-31 (ERA downscaled data - Warm Winter Dataset).
 
-Some Precipitation (pr) and VPD (vpd) datasets were created with modifications in the time series (For testing purposes).
-
-Daily Reference data (NEE, GPP, Reco and ET) are stored [here](./ref/). Monthly, [here](./ref_mon/).
-
-Daily driver variables (tas, wind, rsds, pr, ps, hurs and VPD) are stored [here](./driver/).
-
-Metadata about variables used here can be found in the [nc_write.py script](./nc_write.py). It is hardcoded into two dictionaries: FLUXNET_FULLSET_VARS and OBS_VARS. These names refer respectively to the daily meteorological data downscaled with ERA5 - gapfilled with the MDS method; and to the variables related with the C flux partitioniong (e.g. GPP, NEE, Reco and ET) (Pastorello et al., 2020).
+Create some Precipitation (pr) and VPD (vpd) datasets with modified values (for testing purposes).
 
 ## Use
 
-Currently we have the folowing [sites](./driver/FLUXNET2015.grd)
+Currently we have the folowing [sites](./driver/FLUXNET2015.grd) configured.
 
-Thus, everything is set to convert those sites. You just need to download the data from [FLUXNET 2015 repository](https://fluxnet.org/login/?redirect_to=/data/download-data/) and unzip the files for each site in the [FLUXNET2020 folder](./FLUXNET2020/) in this repository. You can use the [clean_csv.py script](./clean_csvs.py) to remove unused subfolders in the FLUXNET zipped archives.
+Everything is set to convert those sites. You just need to download the appropriate data from [FLUXNET 2015 repository](https://fluxnet.org/login/?redirect_to=/data/download-data/) and unzip the files for each site in the [FLUXNET2020 folder](./FLUXNET2020/) in this repository. You can use the [clean_csv.py script](./clean_csvs.py) to remove unused subfolders in the FLUXNET zipped archives (after unzip it).
 
 With that, run the main script:
 
 ``$ python fluxnet2netcdf.py``
 
-This will generate the files in the parent directory.
+This will populate two subfolders in the parent directory:
 
-There are some details ommited in this readme. Fell free to reach me, I can help you. If you are interested in modify this code feel free to do pull requests or wathever.
+Daily Reference data (NEE, GPP, Reco and ET) are stored [here](./ref/).
+
+Daily driver variables (tas, wind, rsds, pr, ps, hurs and VPD) are stored [here](./driver/).
+
+Metadata about variables used here can be found in the [nc_write.py script](./nc_write.py). It is hardcoded into two dictionaries: FLUXNET_FULLSET_VARS and OBS_VARS. These names refer respectively to the daily meteorological data downscaled with ERA5 - gapfilled with the MDS method; and to the variables related with the carbon and water fluxes (Pastorello et al., 2020).
+
+There are some details ommited in this readme. Feel free to reach me, I can help you. If you are interested in modify this code feel free to do pull requests or wathever.
+
+FLUXNET data must be downloaded from the [FLUXNET 2015 repository](https://fluxnet.org/login/?redirect_to=/data/download-data/) (Registration required). The dataset for which the main script is configured to can be found here: <https://www.icos-cp.eu/data-products/2G60-ZHAK>
 
 ## References
-
-FLUXNET data was downloaded from the [FLUXNET 2015 repository](https://fluxnet.org/login/?redirect_to=/data/download-data/) (Registration required). The dataset used can be found here: <https://www.icos-cp.eu/data-products/2G60-ZHAK>
 
 Allen, R. G. et al.: Crop Evapotranspiration - Guidelines for Computing Crop Water Requirements, Fao Irrigation and Drainage Paper 56, Food and Agriculture Organization of the United Nations, [https://www.fao.org/4/x0490e/x0490e00.htm#Contents1998](https://www.fao.org/4/x0490e/x0490e00.htm#Contents1998), 1998.
 

@@ -1,4 +1,5 @@
 from os import makedirs
+import concurrent.futures
 from nc_write import write_ref_data, write_site_nc, create_gridlist, SITES_COORDINATES
 from conversions import mod_mJJAs, mod_make_drought
 
@@ -18,17 +19,28 @@ for k, v in SITES_COORDINATES.items():
     if site_name == "name": continue
     SITES.append(site_name.split("-")[-1])
 
+def process_variable(variable):
+    write_site_nc(variable)
+
+def process_site(variable, site):
+    write_ref_data(variable, site)
 
 def main():
-    for variable in VAR:
-
-        write_site_nc(variable)
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = [executor.submit(process_variable, variable) for variable in VAR]
+    # for variable in VAR:
+    #     write_site_nc(variable)
 
     create_gridlist("FLUXNET2015")
 
-    for variable in REF:
-        for site in SITES:
-            write_ref_data(variable, site)
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = []
+        for variable in REF:
+            for site in SITES:
+                futures.append(executor.submit(process_site, variable, site))
+    # for variable in REF:
+    #     for site in SITES:
+    #         write_ref_data(variable, site)
 
     # create modified PREC
     write_site_nc('pr', mod=mod_mJJAs)
