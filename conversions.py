@@ -30,6 +30,13 @@ convert_pr = np.vectorize(lambda P: P * 1.5741e-5)
 def convert_vpd_vec(P):
     return (P * 0.1) * (-1)
 
+#    Harrison, L. P. 1963. Fundamentals concepts and definitions relating to humidity.
+#    In Wexler, A (Editor) Humidity and moisture Vol 3, Reinhold Publishing Co., N.Y.
+#    https://www.fao.org/3/x0490e/x0490e0k.htm#annex%203.%20background%20on%20physical%20parameters%20used%20in%20evapotranspiration%20computatio
+# Latent Heat of Vaporization (LHV)
+LHV = np.vectorize(lambda P: 2.501 - (2.361 * 10e-3) * P)
+
+
 # VPD from hPa (FLUXNET) to -kPa (GUESS)
 convert_vpd = np.vectorize(lambda P: (P * 0.1) * (-1))
 

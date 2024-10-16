@@ -10,7 +10,7 @@ import cftime
 import numpy as np
 import pandas as pd
 
-from conversions import convert_pr, convert_ps, convert_ta, convert_vpd, VPD2RH
+from conversions import convert_pr, convert_ps, convert_ta, convert_vpd, VPD2RH, LHV
 from site_data import SITES_COORDINATES, OBS_SITES, arr_da_lenght, last_day
 
 FLUXNET_REF = """References
@@ -98,9 +98,7 @@ def calc_LHV(temp):
     """Harrison, L. P. 1963. Fundamentals concepts and definitions relating to humidity.
        In Wexler, A (Editor) Humidity and moisture Vol 3, Reinhold Publishing Co., N.Y.
        https://www.fao.org/3/x0490e/x0490e0k.htm#annex%203.%20background%20on%20physical%20parameters%20used%20in%20evapotranspiration%20computatio"""
-
-    f = np.vectorize(lambda P: 2.501 - (2.361 * 10e-3) * P)
-    return f(temp)
+    return LHV(temp)
 
 def get_aet(site):
     """
