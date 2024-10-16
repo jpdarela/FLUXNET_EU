@@ -2,3 +2,6 @@
 __pycache__
 FLUXNET2015
 FLUXNET2018
+driver/*.nc
+ref/*.nc
+ref_mon/*.nc
